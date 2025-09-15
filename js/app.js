@@ -133,10 +133,6 @@ $(document).ready(function() {
         const pair = $('#edit-exchange-rate-modal .modal-title').text().replace('Edit ', '').replace(' Exchange Rate', '');
         const exchangeRate = $('#edit-exchange-rate-modal #exchange-rate-input').val();
 
-        // set changed values to the table row
-        const row = $(`tr:contains(${pair})`);
-        row.find('td:eq(1)').text(exchangeRate);
-
         // send values to the server with a patch request
         $.ajax({
             url: `${host}/exchangeRate/${pair}`,
@@ -144,7 +140,9 @@ $(document).ready(function() {
             contentType : "application/x-www-form-urlencoded",
             data: `rate=${exchangeRate}`,
             success: function() {
-
+                // set changed values to the table row
+                const row = $(`tr:contains(${pair})`);
+                row.find('td:eq(1)').text(exchangeRate);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 const error = JSON.parse(jqXHR.responseText);
